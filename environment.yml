@@ -1,0 +1,14 @@
+name: car-classification
+channels:
+  - pytorch-nightly
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.9
+  - numpy
+  - pandas
+  - matplotlib
+  - scikit-learn
+  - pytorch
+  - torchvision
+  - torchaudio
