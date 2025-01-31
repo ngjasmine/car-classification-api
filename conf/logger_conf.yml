@@ -1,0 +1,27 @@
+version: 1
+disable_existing_loggers: False
+
+loggers:
+  '':
+    level: INFO
+    handlers: [h1, h2]
+    propagate: yes
+
+handlers:
+  h1:
+    class: rich.logging.RichHandler
+    level: INFO
+    formatter: brief
+  h2:
+    class: logging.FileHandler
+    level: INFO
+    formatter: precise
+    filename: 'training.log'
+    mode: 'a'
+    encoding: 'utf8'
+
+formatters:
+  brief:
+    format: '%(levelname)s - %(message)s'
+  precise:
+    format: '%(asctime)s : %(levelname)s : %(filename)s, line %(lineno)s : %(message)s'
