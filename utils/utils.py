@@ -2,8 +2,12 @@ import os
 import random
 from PIL import Image
 import matplotlib.pyplot as plt
+import yaml
+from typing import Dict, Any
+import logging
+import logging.config
 
-def check_file_extensions(dataset_dir):
+def check_file_extensions(data_dir):
     """
     Check and display all unique file extensions in the dataset.
 
@@ -14,12 +18,103 @@ def check_file_extensions(dataset_dir):
         set: A set of unique file extensions in the dataset.
     """
     extensions = set()
-    for root, _, files in os.walk(dataset_dir):
+    for dir, _, files in os.walk(data_dir):
         for file in files:
             if not file.startswith('.'):  # Exclude hidden files
                 ext = os.path.splitext(file)[-1].lower()  # Get file extension and normalize to lowercase
                 extensions.add(ext)
     return extensions
+
+def get_image_resolutions(data_dir):
+    """
+    Retrieve the resolutions (width and height) of all images in a specified directory.
+
+    This function recursively traverses a directory and collects the resolutions 
+    (width, height) of all image files with extensions `.png`, `.jpg`, or `.jpeg`.
+
+    Args:
+        data_dir (str or Path): Path to the directory containing image files.
+
+    Returns:
+        list of tuple: A list of tuples, where each tuple contains the width and height 
+        of an image (e.g., [(1920, 1080), (1280, 720), ...]).
+    
+    Raises:
+        FileNotFoundError: If the specified directory does not exist.
+        PIL.UnidentifiedImageError: If a file cannot be opened as an image.
+        """
+    resolutions = []
+    for root, dir, files in os.walk(data_dir):
+        for file in files:
+            if file.lower().endswith(('.png', '.jpg', '.jpeg')):
+                image_path = os.path.join(root, file)
+                with Image.open(image_path) as img:
+                    resolutions.append(img.size)  # img.size is a tuple (width, height)
+    return resolutions
+
+def channel_count(data_dir):
+    """
+    Analyzes image files in a given directory to count image formats and channel configurations.
+
+    Args:
+        data_dir (str): The directory path containing the image files to analyze.
+
+    Returns:
+        tuple: 
+            - image_formats (dict): A dictionary with image formats as keys and their counts as values.
+            - channel_counts (dict): A dictionary with the number of channels as keys and their counts as values.
+
+    Supported Image Formats:
+        - .png
+        - .jpg
+        - .jpeg
+
+    Channel Modes:
+        - 'L': 1 channel (grayscale)
+        - 'RGB', 'YCbCr': 3 channels
+        - 'RGBA', 'CMYK': 4 channels
+        - 'P': 3 channels (palette-based)
+        - '1': 1 channel (binary)
+
+    Prints:
+        - Unhandled modes with filename for debugging.
+    """
+        
+    image_formats = {}
+    channel_counts = {}
+
+    for root, dirs, files in os.walk(data_dir):
+        for file in files:
+            if file.lower().endswith(('.png', '.jpg', '.jpeg')):
+                image_path = os.path.join(root, file)
+                with Image.open(image_path) as img:
+                    # Format
+                    format = img.format
+                    image_formats[format] = image_formats.get(format, 0) + 1
+                    
+                    # Channels
+                    mode = img.mode
+                    if mode == 'L':
+                        channels = 1
+                    elif mode in ['RGB', 'YCbCr']:
+                        channels = 3
+                    elif mode == 'RGBA':
+                        channels = 4
+                    elif mode == 'CMYK':
+                        channels = 4
+                    elif mode == 'P':  # Palette-based images are usually treated as 3-channel images
+                        channels = 3
+                    elif mode == '1':  # Binary images (black and white)
+                        channels = 1
+                    else:
+                        channels = None  # Unknown or unhandled mode
+
+                    if channels is not None:
+                        channel_counts[channels] = channel_counts.get(channels, 0) + 1
+                    else:
+                        print(f"Unhandled mode: {mode} in file {file}")
+
+    return image_formats, channel_counts
 
 def display_random_images(dataset_dir, num_classes=20, grid_size=(4,5), fig_size=(20, 15)):
 
@@ -65,3 +160,32 @@ def display_random_images(dataset_dir, num_classes=20, grid_size=(4,5), fig_size
 
     plt.tight_layout()
     plt.show()
+
+def load_config(path: str) -> Dict[str, Any]:
+	"""
+	Loads a configuration from a YAML file.
+	
+	:path (str): The path to the YAML file that contains the configuration
+	:return: The configuration data loaded from the YAML file as a variable called config.
+	"""
+	with open(path, 'r') as file:
+		config = yaml.safe_load(file)
+	return config
+
+def create_logger(logger_config_path, log_file_path):
+	"""
+	Initializes a logger with a dynamically updated log file path.
+	
+	:param logger_config_path: Path to the logger configuration file.
+	:type logger_config_path: str
+    :param filename: Full path to the log file where logs should be written.
+    :type filename: str
+    :return: A logger instance configured as specified in the YAML file.
+	"""
+	logger_config = load_config(logger_config_path)
+	
+	logger_config['handlers']['h2']['filename'] = log_file_path
+	
+	logging.config.dictConfig(logger_config)
+
+	return logging.getLogger(__name__)
