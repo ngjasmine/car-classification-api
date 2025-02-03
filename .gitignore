@@ -1,3 +1,8 @@
 .DS_Store
-data/
+/data/
 __pycache__/
+models/
+# Allow src.data/ to be included
+!src/data/
+
+/ray_results/
