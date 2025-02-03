@@ -13,3 +13,11 @@ dependencies:
   - pytorch
   - torchvision
   - torchaudio
+  - rich==13.9.4
+  - ipywidgets
+  - pip 
+  pip:
+    - "ray[tune]"
+    - fastapi
+    - uvicorn
+    - python-multipart
