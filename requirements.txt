@@ -22,3 +22,5 @@ python-multipart==0.0.20
 
 # Ray Tune
 ray[tune]==2.41.0
+
+requests==2.32.3
