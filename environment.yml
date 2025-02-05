@@ -1,8 +1,7 @@
 name: car-classification
 channels:
-  - pytorch-nightly
   - defaults
-  - conda-forge
+  # - conda-forge
 dependencies:
   - python=3.9
   - seaborn
@@ -10,14 +9,16 @@ dependencies:
   - pandas
   - matplotlib
   - scikit-learn
-  - pytorch
-  - torchvision
-  - torchaudio
   - rich==13.9.4
   - ipywidgets
   - pip 
-  pip:
+  - pip:
+    - --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu
+    # - pytorch==2.7.0.dev20250204
+    # - torchvision==0.22.0.dev20250204
+    # - torchaudio==2.6.0.dev20250204
     - "ray[tune]"
     - fastapi
     - uvicorn
     - python-multipart
+    - requests
