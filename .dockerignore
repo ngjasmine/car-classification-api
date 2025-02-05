@@ -8,3 +8,4 @@
 data/
 logs/
 ray_results/
+tests/
