@@ -1,7 +1,7 @@
 .DS_Store
 /data/
 __pycache__/
-models/
+
 # Allow src.data/ to be included
 !src/data/
 
