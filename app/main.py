@@ -13,7 +13,7 @@ save_models_dir = project_root / "models"
 model_file_name = save_models_dir/ "best_resnet50_model.pth"
 
 # Load the checkpoint
-checkpoint = torch.load(str(model_file_name))
+checkpoint = torch.load(str(model_file_name), map_location=torch.device("cpu"))
 
 state_dict = checkpoint["state_dict"]
 class_mapping = checkpoint["class_mapping"]
