@@ -1,0 +1,10 @@
+**/*.pyc
+**/*.pyo
+.gitignore
+.git/
+**/__pycache__/
+
+
+data/
+logs/
+ray_results/
