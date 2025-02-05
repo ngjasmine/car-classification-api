@@ -10,9 +10,10 @@ ipywidgets==8.1.5
 rich==13.9.4
 
 # PyTorch
-torch==2.6.0.dev20241112
-torchvision==0.20.0.dev20241118
-torchaudio==2.5.0.dev20241118
+--extra-index-url https://download.pytorch.org/whl/nightly/cpu
+torch==2.7.0.dev20250204
+torchvision==0.22.0.dev20250204
+torchaudio==2.6.0.dev20250204
 
 # FastAPI and Uvicorn
 fastapi==0.115.7
