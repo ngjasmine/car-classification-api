@@ -6,3 +6,4 @@ models/
 !src/data/
 
 /ray_results/
+logs/
