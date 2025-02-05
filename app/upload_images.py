@@ -2,6 +2,7 @@ import os
 import argparse
 import requests
 import json
+from datetime import datetime
 
 parser = argparse.ArgumentParser(description="Upload all images from specified\
                                  folder to the FastAI server.")
@@ -32,6 +33,21 @@ if not image_files:
 # Send the request
 response = requests.post(url, files=image_files)
 
-# Pretty print the response
+# Parse the response JSON
 response_json = response.json()
+
+# Pretty print the response
 print(json.dumps(response_json, indent=4))
+
+# Save the predictions locally
+output_dir = "app/predictions"
+os.makedirs(output_dir, exist_ok=True)
+
+# Create a timestamped file
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+output_file = os.path.join(output_dir, f"predictions_{timestamp}.json")
+
+with open(output_file, "w") as f:
+    json.dump(response_json, f, indent=4)
+
+print(f"Predictions saved to {output_file}")
