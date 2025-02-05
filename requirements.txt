@@ -1,19 +1,7 @@
-# Base dependencies
-seaborn==0.13.2
-numpy==1.26.4
-pandas==2.2.3
-matplotlib==3.9.2
-scikit-learn==1.5.2
-ipywidgets==8.1.5
-
-# Logging
-rich==13.9.4
-
 # PyTorch
---extra-index-url https://download.pytorch.org/whl/nightly/cpu
-torch==2.7.0.dev20250204
-torchvision==0.22.0.dev20250204
-torchaudio==2.6.0.dev20250204
+torch==2.6.0
+torchvision==0.21.0
+torchaudio==2.6.0
 
 # FastAPI and Uvicorn
 fastapi==0.115.7
@@ -23,4 +11,6 @@ python-multipart==0.0.20
 # Ray Tune
 ray[tune]==2.41.0
 
+ipykernel==6.29.5
 requests==2.32.3
+pyyaml==6.0.2
