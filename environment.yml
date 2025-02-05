@@ -13,12 +13,4 @@ dependencies:
   - ipywidgets
   - pip 
   - pip:
-    - --pre torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/nightly/cpu
-    # - pytorch==2.7.0.dev20250204
-    # - torchvision==0.22.0.dev20250204
-    # - torchaudio==2.6.0.dev20250204
-    - "ray[tune]"
-    - fastapi
-    - uvicorn
-    - python-multipart
-    - requests
+    - -r requirements.txt
