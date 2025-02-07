@@ -131,6 +131,7 @@ The following section captures the workflow used in developing this project:
 ## Assumptions
 - This README.md is specifically written for users who want to use the FastAPI app for inference; and not for developers who want to further train the model (though that would be possible by forking and cloning this repository).
 - Metric to optimize for is best accuracy.
+- Test accuracy obtained of 68.70% is acceptable by user (for now).
 - No requirement for inference speed.
 - FastAPI app is only required to be hosted locally.
 - User is uploading an image/images from a local directory rather than from the web (eg. S3 bucket).
