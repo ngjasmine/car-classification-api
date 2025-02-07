@@ -29,15 +29,18 @@ NOTE: the deployment environment must have at least 3 GB of available storage: 2
     -e TZ=Asia/Singapore \
     car-classification-api:v1
     ```
-* `-d` flag indicates running the container in detached mode (so that we can use the terminal for other actions; see step 7 below).
-* `-p` flag  forwards traffic from local machine's 8000 port to container's port 8000
+* `-d` (deatched mode): running the container in detached mode so that we can use the terminal for other actions
+* `-p 8000:8000` (port forwarding): forwards traffic from local machine's 8000 port to container's port 8000
+* `-v "$(pwd)/app:/car-classification-api/app"` (volume mount): mounts your local app/ directory to /car-classification-api/app inside the container, so that predictions in .json format can persist locally
+* `-v "<path_to_folder_for_inference>:/app/data/for-prediction"` (volume mount): ensures that your local inference folder is accessible inside the container at /app/data/for-prediction.
+* `-e TZ=Asia/Singapore` (environment variable): Sets the timezone inside the container to Asia/Singapore, ensuring that logs and timestamps match the local timezone.
 
 6. Check that the FastAPI app is running by visiting http://127.0.0.1:8000/docs on a web browser on your local machine. For a single image you may choose to upload it using the interface here under POST.
 
 7. Obtain the container ID by running the command below. This will be used in the next step, as `<container_id>`.
-```
-docker ps
-```
+    ```
+    docker ps
+    ```
 
 8. In order to carry out inference on the folder of images, :
     ```
